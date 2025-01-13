@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotunes - Login</title>
+    <style>
+    /* General styles */
+    * {
+      font-family: Montserrat;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(90deg, rgba(0, 200, 89, 0.8) 0%, rgba(0, 200, 112, 0.8) 57%, rgba(0, 200, 144, 1) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .main-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(38, 50, 56, 1);
+      background: linear-gradient(90deg, rgba(38, 50, 56, 1) 0%, rgba(38, 50, 64, 1) 50%, rgba(38, 50, 66, 1) 100%);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+      width: 40%;
+      height: auto;
+      margin: 20px;
+    }
+
+    .form-container {
+      width: 50%;
+      text-align: center;
+    }
+
+    .heading__h2 {
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .links__p {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    .links__p a {
+      text-decoration: none;
+      color: #00c979;
+      font-weight: 500;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 20px;
+    }
+
+    input[type="text"], input[type="password"] {
+      border: none;
+      width: 100%;
+      padding: 8px 12px;
+      background: transparent;
+      color: #fff;
+      border-bottom: 2px solid #fff;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      border-radius: 16px;
+      padding: 8px 16px;
+      background: #00c979;
+      font-size: 1.1em;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #1E88E5;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div class="main-section">
+        <div class="form-container">
+            <h2 class="heading__h2">
+                <img src="C:\Users\Shirin\Downloads\musical-note (1).png" width="50px" alt="Musical Note Icon"> Emotunes
+            </h2>
+            <p class="links__p">
+                <a href="C:\Users\Shirin\Desktop\GITPRO\Emotune2\signup\login.html" style="font-weight:700;">Sign In</a> | 
+                <a href="C:\Users\Shirin\Desktop\GITPRO\Emotune2\signup\signup.html">Sign Up</a>
+            </p>
+            <form id="login-form">
+                <label for="email">EMAIL</label>
+                <input type="text" id="email" placeholder="Enter your email address">
+                <div class="error" id="email-error"></div>
+
+                <label for="password">PASSWORD</label>
+                <input type="password" id="password" placeholder="Enter your password">
+                <div class="error" id="password-error"></div>
+
+                <button class="button" type="submit">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+    
+        // Simulating stored user credentials (replace this with actual backend validation)
+        const storedCredentials = {
+            email: "test@example.com",
+            password: "strongpassword123"
+        };
+    
+        form.addEventListener('submit', function (event) {
+            // Prevent form submission
+            event.preventDefault();
+    
+            // Clear previous errors
+            document.getElementById('email-error').textContent = '';
+            document.getElementById('password-error').textContent = '';
+    
+            // Validation flags
+            let isValid = true;
+    
+            // Validate Email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+    
+            // Validate Password
+            const password = document.getElementById('password').value.trim();
+            if (password.length < 8) {
+                document.getElementById('password-error').textContent = 'Password must be at least 8 characters.';
+                isValid = false;
+            }
+    
+            // If the email and password formats are valid, check for match
+            if (isValid) {
+                if (email === storedCredentials.email && password === storedCredentials.password) {
+                    alert('Logged in successfully!');
+                    form.submit(); // Optional: Remove if manual handling is required
+                } else {
+                    document.getElementById('password-error').textContent = 'Email or password is incorrect.';
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>
