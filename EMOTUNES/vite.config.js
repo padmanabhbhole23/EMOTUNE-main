@@ -7,5 +7,6 @@ export default defineConfig({
     proxy: {
       "/api": "http://localhost:5000", // Proxy API requests to backend
     },
+    historyApiFallback: true, // Ensure proper SPA routing for React Router
   },
 });

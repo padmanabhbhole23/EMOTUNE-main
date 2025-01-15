@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from "react";
 import * as faceapi from "face-api.js";
+import { useNavigate } from "react-router-dom";
 
 const EmotionBasedMusicRecommender = () => {
   const [emotion, setEmotion] = useState(""); // Store the detected emotion
   const [songs, setSongs] = useState([]); // Store recommended songs
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-
+  const navigate=useNavigate();
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -17,8 +19,11 @@ const EmotionBasedMusicRecommender = () => {
         console.error("Error loading models:", err);
       }
     };
+
     loadModels();
   }, []);
+
+  
 
   const startCamera = async () => {
     try {
