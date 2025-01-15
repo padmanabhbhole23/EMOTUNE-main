@@ -61,12 +61,12 @@ const Login = () => {
       }
     }
   };
-
+  
   return (
     <div className="main-section">
       <div className="form-container">
         <h2 className="heading__h2">
-          <img src="https://github.com/padmanabhbhole23/EMOTUNE-main/blob/main/EMOTUNES/src/assets/musical-note%20.png" width="50px" alt="Musical Not" /> Emotunes
+          <img src="/EMOTUNES/public/musical-note.png" width="50px" alt="Musical Not" /> Emotunes
         </h2>
         <p className="links__p">
           <Link to="/login" style={{ fontWeight: 700 }}>Sign In</Link> | <Link to="/signup">Sign Up</Link>

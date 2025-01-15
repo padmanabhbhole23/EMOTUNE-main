@@ -78,29 +78,27 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-// Song Recommendations API Endpoint
 app.get("/api/recommend", (req, res) => {
   try {
-    
-    const emotion = req.query.s; 
-    const email=sessionStorage.getItem('userEmail');// Emotion passed as query parameter
-    console.log("Received emotion:", emotion);
+    const emotion = req.query.s; // Emotion passed as query parameter
+    const email = req.query.email; // Email from the request
 
-    const songs = songRecommendations[emotion] || ["No songs found"];
-    res.json({ emotion, songs });
     if (!email || !emotion) {
       return res.status(400).json({ message: "Email and Emotion are required" });
     }
-  
+
+    console.log("Received emotion:", emotion);
+    const songs = songRecommendations[emotion] || ["No songs found"];
+
     // Insert emotion and email into the database
-    const query = "INSERT INTO emotiondetail (userName,emotion) VALUES (?, ?)";
+    const query = "INSERT INTO emotiondetail (userName, emotion) VALUES (?, ?)";
     db.query(query, [email, emotion], (err, result) => {
       if (err) {
         console.error("Error storing emotion:", err);
         return res.status(500).json({ message: "Server error" });
       }
-  
-      res.status(201).json({ message: "Emotion stored successfully" });
+
+      res.status(201).json({ emotion, songs, message: "Emotion stored successfully" });
     });
   } catch (error) {
     console.error("Error in /api/recommend endpoint:", error);
@@ -139,26 +137,6 @@ app.post("/api/signup", (req, res) => {
     });
   });
 });
-/*
-// Emotion Storage API Endpoint
-app.post("/api/input", (req, res) => {
-  const { email, emotion } = req.body;
-
-  if (!email || !emotion) {
-    return res.status(400).json({ message: "Email and Emotion are required" });
-  }
-
-  // Insert emotion and email into the database
-  const query = "INSERT INTO emotiondetail (userName,emotion) VALUES (?, ?)";
-  db.query(query, [email, emotion], (err, result) => {
-    if (err) {
-      console.error("Error storing emotion:", err);
-      return res.status(500).json({ message: "Server error" });
-    }
-
-    res.status(201).json({ message: "Emotion stored successfully" });
-  });
-});*/
 
 // Start Server
 app.listen(port, () => {

@@ -9,7 +9,17 @@ const EmotionBasedMusicRecommender = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate=useNavigate();
+
   useEffect(() => {
+    const checkLogin = () => {
+      const email = sessionStorage.getItem("userEmail");
+      if (!email) {
+        console.log("User not logged in. Redirecting to login...");
+        navigate("/login"); // Redirect to login page
+      }
+      
+    };
+    checkLogin();
     const loadModels = async () => {
       try {
         await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
@@ -23,7 +33,24 @@ const EmotionBasedMusicRecommender = () => {
     loadModels();
   }, []);
 
-  
+  const handleLogout = () => {
+    const video = videoRef.current;
+    if (video && video.srcObject) {
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+
+      tracks.forEach((track) => {
+        track.stop(); // Stop each track
+      });
+
+      video.srcObject = null; // Clear the video source
+    }
+    // Clear session storage
+    sessionStorage.clear();
+
+    // Redirect to login page
+    navigate("/login");
+  };
 
   const startCamera = async () => {
     try {
@@ -79,16 +106,17 @@ const EmotionBasedMusicRecommender = () => {
 
   const recommendSongs = async (detectedEmotion) => {
     try {
-      // Use full backend URL
-      const response = await fetch(`http://localhost:5000/api/recommend?s=${detectedEmotion}`);
+      const email = sessionStorage.getItem("userEmail"); // Retrieve email from sessionStorage
+      const response = await fetch(`http://localhost:5000/api/recommend?s=${detectedEmotion}&email=${email}`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
+  
       const data = await response.json();
       setSongs(data.songs || ["No songs found"]);
     } catch (err) {
       console.error("Error fetching song recommendations:", err);
     }
   };
+  
 
   return (
     <div
@@ -104,6 +132,23 @@ const EmotionBasedMusicRecommender = () => {
         justifyContent: "center",
       }}
     >
+      {/* Logout Button */}
+      <button
+        onClick={handleLogout}
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          backgroundColor: "red",
+          color: "white",
+          padding: "10px 20px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Logout
+      </button>
       <h1>Emotion Based Music Recommender</h1>
       <div style={{ position: "relative", display: "inline-block" }}>
         <video
